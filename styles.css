@@ -1,0 +1,36 @@
+.gameTable{
+    margin-top: 1rem;
+    width: 50rem;
+    border: 0.1rem solid blue;
+}
+
+.mario{
+    border: 0.1rem solid black;
+    height: 4rem;
+    width: 4rem;
+    background-image: url(./images/mario.png);
+    background-repeat: no-repeat;
+    background-size: 75px 60px;
+}
+
+.mario1{
+    border: 0.1rem solid black;
+    height: 4rem;
+    width: 4rem;
+    background-image: url(./images/mario.png);
+    background-repeat: no-repeat;
+    background-size: 75px 60px;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+
+}
+
+
+.mushroo{
+    border: 0.1rem solid black;
+    height: 4rem;
+    width: 4rem;
+    background-image: url(./images/mushroo.png);
+    background-repeat: no-repeat;
+    background-size: 75px 60px;
+}

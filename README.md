@@ -1,2 +1,4 @@
-# MarioGame
-Javascript game
+# Mario Game
+Javascript game.
+
+
