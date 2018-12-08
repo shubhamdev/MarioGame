@@ -11,54 +11,63 @@ var Game = function(col, row){
     this.bindEvents = function(){
        document.addEventListener("keydown",(e => {
            if(this.player.mushrooms.length >0){
-           if(e && e.keyCode === 37){
-               //Right
-              if(this.player.moves[0] !== 0){
-                 --this.player.moves[0]
-                 this.Board.update(this.player, 'mario1', 'RightLeft');
-                ++this.player.moveCount;
-             } else{
-               this.player.moves[0] = row -1;
-               this.Board.update(this.player, 'mario1', 'RightLeft');
-               ++this.player.moveCount;
-             }
-           } else if(e && e.keyCode === 39){
-            //Right
-                if(this.player.moves[0] <= row -2){
-                    ++this.player.moves[0]
-                    this.Board.update(this.player, 'mario', 'RightLeft');
-                    ++this.player.moveCount;
-                }else{
-                    this.player.moves[0] = 0;
-                    this.Board.update(this.player, 'mario', 'RightLeft');
-                    ++this.player.moveCount;
-                }
-           } else if(e && e.keyCode === 38){
-               //Up
-             if(this.player.moves[1] !== 0){
-                --this.player.moves[1]
-                this.Board.update(this.player, 'mario1', 'UpDown');
-                ++this.player.moveCount;
-             }else{
-               this.player.moves[1] = col - 1;
-               this.Board.update(this.player, 'mario1', 'UpDown');
-               ++this.player.moveCount;
-             }
-           }  else if(e && e.keyCode === 40){
-               //Down
-             if(this.player.moves[1] <= col - 2){
-                ++this.player.moves[1]
-                this.Board.update(this.player, 'mario1', 'UpDown');
-                ++this.player.moveCount;
-             }else{
-               this.player.moves[1] = 0;
-               this.Board.update(this.player, 'mario1', 'UpDown');
-               ++this.player.moveCount;
-             }
-           } else{
-           }
+            switch (e.keyCode){
+                case 37:
+                    // Left
+                    if(this.player.moves[0] !== 0){
+                        --this.player.moves[0]
+                        this.Board.update(this.player, 'mario1', 'RightLeft');
+                        ++this.player.moveCount;
+                    } else{
+                        this.player.moves[0] = row -1;
+                        this.Board.update(this.player, 'mario1', 'RightLeft');
+                        ++this.player.moveCount;
+                    }
+                    this.updateMovesCount();
+                    break;
+                case 39:
+                    // Right
+                    if(this.player.moves[0] <= row -2){
+                        ++this.player.moves[0]
+                        this.Board.update(this.player, 'mario', 'RightLeft');
+                        ++this.player.moveCount;
+                    }else{
+                        this.player.moves[0] = 0;
+                        this.Board.update(this.player, 'mario', 'RightLeft');
+                        ++this.player.moveCount;
+                    }
+                    this.updateMovesCount();
+                    break;
+                case 38:
+                    // Up
+                    if(this.player.moves[1] !== 0){
+                        --this.player.moves[1]
+                        this.Board.update(this.player, 'mario1', 'UpDown');
+                        ++this.player.moveCount;
+                    }else{
+                        this.player.moves[1] = col - 1;
+                        this.Board.update(this.player, 'mario1', 'UpDown');
+                        ++this.player.moveCount;
+                    }
+                    this.updateMovesCount();
+                    break;
+                case 40:
+                    // Down
+                    if(this.player.moves[1] <= col - 2){
+                        ++this.player.moves[1]
+                        this.Board.update(this.player, 'mario1', 'UpDown');
+                        ++this.player.moveCount;
+                    }else{
+                        this.player.moves[1] = 0;
+                        this.Board.update(this.player, 'mario1', 'UpDown');
+                        ++this.player.moveCount;
+                    }
+                    this.updateMovesCount();
+                  break;
+                default:
+                    // code to be executed if n doesn't match any constant
+            }
         }
-        this.updateMovesCount();
        }))
     }
 
@@ -73,7 +82,8 @@ var Game = function(col, row){
     };
   
     this.updateMovesCount = function(){
-        document.getElementById('movesCount').innerText = 'total move :' +  this.player.moveCount;
+        document.getElementById('movesCount').innerText = 'Total move: ' +  this.player.moveCount;
+        document.getElementById('movesCount').style.color  = 'red';
     }
     this.start();
 };
@@ -134,31 +144,33 @@ var Board = function(){
     };
 
     this.update = function (player, css, arraow) {
+        var _firstColPreviousMove = player.preMoves[1] ,_firstRowPreviousMove = player.preMoves[0],
+        _firstRowCurrentMove = player.moves[0], _firstColCurrentMove = player.moves[1];
         var table = document.body;
         table = table.getElementsByTagName('table')[0];
-        var tr = table.getElementsByTagName('tr')[player.preMoves[1]];
-        var td = tr.getElementsByTagName('td')[player.preMoves[0]];
+        var tr = table.getElementsByTagName('tr')[_firstColPreviousMove];
+        var td = tr.getElementsByTagName('td')[_firstRowPreviousMove];
         td.className = '';
-        var tr1 =table.getElementsByTagName('tr')[player.moves[1]]
-        var tr2  =tr1.getElementsByTagName('td')[player.moves[0]];
+        var tr1 =table.getElementsByTagName('tr')[_firstColCurrentMove]
+        var tr2  =tr1.getElementsByTagName('td')[_firstRowCurrentMove];
         tr2.className = css;
         var filterArray = [];
         if(arraow === 'arraow'){
-            if(this._board[player.preMoves[0]][player.preMoves[1]].isFood){
-                this._board[player.preMoves[0]][player.preMoves[1]].isFood = false;
-                this._board[player.preMoves[0]][player.preMoves[1]].isPlayer = true;
+            if(this._board[_firstRowPreviousMove][_firstColPreviousMove].isFood){
+                this._board[_firstRowPreviousMove][_firstColPreviousMove].isFood = false;
+                this._board[_firstRowPreviousMove][_firstColPreviousMove].isPlayer = true;
             }
             filterArray = player.mushrooms.filter(function(m){ 
-                return m.moves[1] === player.moves[0] && m.moves[0] === player.moves[1] });
+                return m.moves[1] === _firstRowCurrentMove && m.moves[0] === _firstColCurrentMove });
         }else{
-            if(this._board[player.preMoves[1]][player.preMoves[0]].isFood){
-                this._board[player.preMoves[1]][player.preMoves[0]].isFood = false;
-                this._board[player.preMoves[1]][player.preMoves[0]].isPlayer = true;
+            if(this._board[_firstColPreviousMove][_firstRowPreviousMove].isFood){
+                this._board[_firstColPreviousMove][_firstRowPreviousMove].isFood = false;
+                this._board[_firstColPreviousMove][_firstRowPreviousMove].isPlayer = true;
             }
             filterArray = player.mushrooms.filter(function(m){ 
-                return m.moves[0] === player.moves[1] && m.moves[1] === player.moves[0] });
+                return m.moves[0] === _firstColCurrentMove && m.moves[1] === _firstRowCurrentMove });
         }
-        player.preMoves = [player.moves[0] , player.moves[1]];
+        player.preMoves = [_firstRowCurrentMove , _firstColCurrentMove];
         this.gameOver(player, filterArray);
     }
 
