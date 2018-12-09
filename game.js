@@ -75,7 +75,7 @@ var Game = function(col, row){
       this.init();
       this.Board = new Board(); 
       this.player = new Player('Shubham');
-      this.Board.createMushroom(col, row);
+      this.Board.createMushroom(col, row, 'mushroo');
       this.Board.create(col, row, this.player);
       this.player.mushrooms = this.Board.possibleMoves();
       this.Board.gameOver(this.player,[{index : 0 , moves: [0,0]}]);
@@ -85,6 +85,7 @@ var Game = function(col, row){
         document.getElementById('movesCount').innerText = 'Total move: ' +  this.player.moveCount;
         document.getElementById('movesCount').style.color  = 'red';
     }
+
     this.start();
 };
   
@@ -99,7 +100,7 @@ var Player = function(className){
 var Board = function(){
 
     this._board = [];
-    this.createMushroom = function (row, col) {
+    this.createMushroom = function (row, col, mushroo) {
         row = parseInt(row);
         col = parseInt(col);
         for(var i = 0; i < row; i++){ 
@@ -181,6 +182,8 @@ var Board = function(){
                     player.mushrooms.splice(j, 1);
                     if(player.mushrooms.length === 0){
                         document.getElementById('gameOver').innerText = 'game over';
+                        var count = player.moveCount + 1;
+                        alert('Game over and total moves: ' + count);
                     }
                 }
             }
@@ -199,7 +202,7 @@ var Board = function(){
     }
 };
 
-window.onload = function () { 
+window.onload = function () {
   var row = prompt("please enter board width", "");
   var col = prompt("please enter board boardHeight", "");
   col = parseInt(col);

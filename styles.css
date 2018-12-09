@@ -8,7 +8,7 @@
     border: 0.1rem solid black;
     height: 4rem;
     width: 4rem;
-    background-image: url(./images/mario.png);
+    background-image: url('https://i.postimg.cc/hGQS07DD/mario.png');
     background-repeat: no-repeat;
     background-size: 75px 60px;
 }
@@ -17,7 +17,7 @@
     border: 0.1rem solid black;
     height: 4rem;
     width: 4rem;
-    background-image: url(./images/mario.png);
+    background-image: url('https://i.postimg.cc/hGQS07DD/mario.png');
     background-repeat: no-repeat;
     background-size: 75px 60px;
     -webkit-transform: scaleX(-1);
@@ -30,7 +30,7 @@
     border: 0.1rem solid black;
     height: 4rem;
     width: 4rem;
-    background-image: url(./images/mushroo.png);
+    background-image: url('https://i.postimg.cc/X724SgXN/mushroo.png');
     background-repeat: no-repeat;
     background-size: 75px 60px;
 }
