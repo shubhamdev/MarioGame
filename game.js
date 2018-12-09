@@ -79,6 +79,7 @@ var Game = function(col, row){
       this.Board.create(col, row, this.player);
       this.player.mushrooms = this.Board.possibleMoves();
       this.Board.gameOver(this.player,[{index : 0 , moves: [0,0]}]);
+      this.updateMovesCount();
     };
   
     this.updateMovesCount = function(){
@@ -133,8 +134,18 @@ var Board = function(){
                 td.style.width =  this._board[i][j].width +'rem';
                 this._board[i][j].foodArray = [];
                 if(this._board[i][j].isFood){
-                    td.className = this._board[i][j].class;
-                    this._board[i][j].foodArray = [i, j];
+                    if(i === 0 && j === 0 && col > 1){
+                        this._board[i][j].isFood = false;
+                        this._board[i][j].class = '';
+                        var k = col === j ? j : j+1;
+                        this._board[i][k].isFood = true;
+                        this._board[i][k].class = 'mushroo'
+                        td.className = this._board[i][k].class;
+                        this._board[i][k].foodArray = [i, k];
+                    }else{
+                        td.className = this._board[i][j].class;
+                        this._board[i][j].foodArray = [i, j];
+                    }
                 }
                 if(this._board[i][j].isPlayer){
                     td.className = 'mario';
@@ -179,7 +190,9 @@ var Board = function(){
         if(player.mushrooms.length > 0 && filterArray.length >0){
             for(var j = 0; j < player.mushrooms.length; j++){
                 if(player.mushrooms[j].index === filterArray[0].index){
-                    player.mushrooms.splice(j, 1);
+                    if((player.mushrooms[j].moves[0] ===filterArray[0].moves[0]) && (player.mushrooms[j].moves[1] ===filterArray[0].moves[1])){
+                       player.mushrooms.splice(j, 1);
+                    }
                     if(player.mushrooms.length === 0){
                         document.getElementById('gameOver').innerText = 'game over';
                         var count = player.moveCount + 1;
